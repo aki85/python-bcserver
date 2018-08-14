@@ -208,6 +208,7 @@ class Application(object):
         }
         return jsonify(response), 200
     
+    # params { sender: address, recipient: address, amount: float }
     @app.route('/transactions/new', methods=['POST'])
     def new_transaction():
         values = request.get_json()
@@ -231,6 +232,7 @@ class Application(object):
         }
         return jsonify(response), 200
 
+    # params { nodes: int[] }
     @app.route('/nodes/register', methods=['POST'])
     def register_nodes():
         values = request.get_json()
@@ -262,6 +264,16 @@ class Application(object):
                 'message': 'Our chain is authoritative',
                 'chain': Application.blockchain.chain
             }
+
+        return jsonify(response), 200
+
+    @app.route('/reboot', methods=['GET'])
+    def reboot():
+        Application.blockchain = Blockchain()
+
+        response = {
+            'message': 'Reboot completed'
+        }
 
         return jsonify(response), 200
 
